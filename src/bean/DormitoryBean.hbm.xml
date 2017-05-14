@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bean.DormitoryBean" table="dormitory" catalog="oufenghua">
+        <!--配置主键-->
+        <composite-id>
+            <key-property name="d_num" type="java.lang.Integer">
+                <column name="d_num" default="000"></column>
+            </key-property>
+            <key-property name="d_c" type="java.lang.Integer">
+                <column name="d_c"></column>
+            </key-property>
+        </composite-id>
+        <!--配置其他属性-->
+        <property name="d_floor" type="java.lang.Integer">
+            <column name="d_floor"></column>
+        </property>
+        <property name="d_bed" type="java.lang.Integer">
+            <column name="d_bed"></column>
+        </property>
+        <property name="d_price" type="java.lang.Integer">
+            <column name="d_price"></column>
+        </property>
+    </class>
+</hibernate-mapping>

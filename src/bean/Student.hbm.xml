@@ -1,0 +1,39 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bean.Student" table="student" catalog="oufenghua">
+
+        <!--配置类和主键-->
+        <id name="s_num" type="java.lang.Integer">
+            <column name="s_num"></column>
+            <generator class="native"></generator>
+        </id>
+
+        <!--配置其他属性-->
+        <property name="s_college" type="java.lang.String">
+            <column name="s_college"></column>
+        </property>
+        <property name="s_name" type="java.lang.String">
+            <column name="s_name"></column>
+        </property>
+        <property name="s_age" type="java.lang.Integer">
+            <column name="s_age"></column>
+        </property>
+        <property name="s_grade" type="java.lang.Integer">
+            <column name="s_grade"></column>
+        </property>
+        <property name="s_sex" type="java.lang.String">
+            <column name="s_sex"></column>
+        </property>
+        <property name="s_department" type="java.lang.Integer">
+            <column name="s_department"></column>
+        </property>
+        <property name="s_tel" type="java.lang.String">
+            <column name="s_tel"></column>
+        </property>
+        <property name="s_dormitory_num" type="java.lang.Integer">
+            <column name="s_dormitory_num"></column>
+        </property>
+    </class>
+</hibernate-mapping>
