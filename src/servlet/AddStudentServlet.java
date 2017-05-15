@@ -1,6 +1,7 @@
 package servlet;
 
 import bean.DormitoryBean;
+import bean.MessageHandler;
 import bean.Student;
 import dao.DormitoryDao;
 import dao.StudentDao;
@@ -74,35 +75,23 @@ public class AddStudentServlet extends HttpServlet {
                 DormitoryBean bean = findThisDormitory();
                 if (bean.getD_bed() >= 4) {
                     //宿舍满人了
-                    reponseJsonObject.put("status", "fail");
-                    reponseJsonObject.put("detail", "宿舍满人了");
-                    resp.getWriter().write(reponseJsonObject.toString());
+                    MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,"宿舍满人了");
                 } else {
                     //宿舍有空位
                     studentDao.add(student);
                     bean.setD_bed(bean.getD_bed() + 1);
                     new DormitoryDao().update(bean);
-                    reponseJsonObject.put("status", "success");
-                    reponseJsonObject.put("detail", "操作成功");
-                    resp.getWriter().write(reponseJsonObject.toString());
+                    MessageHandler.sendDetailMessage(resp.getWriter(),true,MessageHandler.DETAIL,"操作成功");
                 }
 
             } else {
-                reponseJsonObject.put("status", "fail");
-                reponseJsonObject.put("detail", "上传上来的数据为空");
-                resp.getWriter().write(reponseJsonObject.toString());
+                //获取数据为空
+                MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,"上传上来的数据为空");
             }
 
         } catch (Exception e) {
-            try {
-                e.printStackTrace();
-                reponseJsonObject.put("status", "fail");
-                reponseJsonObject.put("detail", e.getMessage());
-                resp.getWriter().write(reponseJsonObject.toString());
-            } catch (JSONException jsonE) {
-                jsonE.printStackTrace();
-            }
-
+            //抓获异常
+            MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package servlet;
 
+import bean.MessageHandler;
 import bean.Student;
 import dao.StudentDao;
 import org.json.JSONArray;
@@ -58,20 +59,10 @@ public class SelAllStudentSevlet extends HttpServlet {
                 temp.put("dormitory_num",student.getS_dormitory_num());
                 array.put(temp);
             }
-            respJson.put("list",array);
-            respJson.put("status","success");
-            resp.getWriter().write(respJson.toString());
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DATA, array);
         }catch (Exception e){
 //            返回异常细节
-            e.printStackTrace();
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("status","fail");
-                jsonObject.put("detail",e.getMessage());
-                resp.getWriter().write(jsonObject.toString());
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, e.getMessage());
         }
     }
 

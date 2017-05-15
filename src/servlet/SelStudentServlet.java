@@ -1,5 +1,6 @@
 package servlet;
 
+import bean.MessageHandler;
 import bean.Student;
 import dao.StudentDao;
 import org.hibernate.query.Query;
@@ -44,7 +45,6 @@ public class SelStudentServlet extends HttpServlet {
             JSONObject jsonObject = new JSONObject();
             resp.setCharacterEncoding("UTF-8");
             resp.setContentType("application/json;charset=UTF-8");
-            jsonObject.put("status","success");
             jsonObject.put("num",student.getS_num());
             jsonObject.put("name",student.getS_name());
             jsonObject.put("sex",student.getS_sex());
@@ -54,27 +54,9 @@ public class SelStudentServlet extends HttpServlet {
             jsonObject.put("grade",student.getS_grade());
             jsonObject.put("tel",student.getS_tel());
             jsonObject.put("dormitory_num",student.getS_dormitory_num());
-            resp.getWriter().write(jsonObject.toString());
-        } catch (JSONException e) {
-            JSONObject respJson = new JSONObject();
-            try {
-                respJson.put("status","fail");
-                respJson.put("detail",e.getMessage());
-                resp.getWriter().write(respJson.toString());
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
-
-            e.printStackTrace();
+            MessageHandler.sendDetailMessage(resp.getWriter(),true,MessageHandler.DATA,jsonObject);
         }catch (Exception e){
-            JSONObject respJson = new JSONObject();
-            try{
-                respJson.put("status","fail");
-                respJson.put("detail",e.getMessage());
-                resp.getWriter().write(respJson.toString());
-            }catch (JSONException e1){
-
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DATA,e.getMessage());
         }
     }
 

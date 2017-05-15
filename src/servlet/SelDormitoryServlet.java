@@ -1,6 +1,7 @@
 package servlet;
 
 import bean.DormitoryBean;
+import bean.MessageHandler;
 import dao.DormitoryDao;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,31 +50,18 @@ public class SelDormitoryServlet extends HttpServlet {
             if (list != null) {
                 DormitoryBean bean = list.get(0);
                 JSONObject respJson = new JSONObject();
-                respJson.put("status", "success");
                 respJson.put("c", bean.getD_c());
                 respJson.put("num", bean.getD_num());
                 respJson.put("floor", bean.getD_floor());
                 respJson.put("bed", bean.getD_bed());
                 respJson.put("price", bean.getD_price());
-                resp.getWriter().write(respJson.toString());
+                MessageHandler.sendDetailMessage(resp.getWriter(),true,MessageHandler.DATA,respJson);
             } else {
-                JSONObject jsonObject1 = new JSONObject();
-                jsonObject1.put("status", "fail");
-                jsonObject1.put("detail", "没有数据");
-                resp.getWriter().write(jsonObject1.toString());
+                MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,"没有数据");
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("status", "fail");
-                jsonObject.put("detail", e.getMessage());
-                resp.getWriter().write(jsonObject.toString());
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,e.getMessage());
         }
     }
 

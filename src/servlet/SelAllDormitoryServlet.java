@@ -1,6 +1,7 @@
 package servlet;
 
 import bean.DormitoryBean;
+import bean.MessageHandler;
 import dao.DormitoryDao;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,20 +55,11 @@ public class SelAllDormitoryServlet extends HttpServlet {
                 temp.put("floor", bean.getD_floor());
                 array.put(temp);
             }
-            respJson.put("list", array);
-            respJson.put("status", "success");
-            resp.getWriter().write(respJson.toString());
+            //成功
+            MessageHandler.sendDetailMessage(resp.getWriter(),true,MessageHandler.DATA,array);
         } catch (Exception e) {
 //            异常抛出
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("status", "fail");
-                jsonObject.put("detail", e.getMessage());
-                resp.getWriter().write(respJson.toString());
-                e.printStackTrace();
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,e.getMessage());
         }
 
     }

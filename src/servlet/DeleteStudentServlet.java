@@ -1,5 +1,6 @@
 package servlet;
 
+import bean.MessageHandler;
 import bean.Student;
 import dao.StudentDao;
 import org.hibernate.HibernateException;
@@ -46,19 +47,9 @@ public class DeleteStudentServlet extends HttpServlet {
             student.setS_num(s_num);
             StudentDao studentDao = new StudentDao();
             studentDao.delete(student);
-            reponseJsonObject.put("status", "success");
-            reponseJsonObject.put("detail", "操作成功");
-            resp.getWriter().write(reponseJsonObject.toString());
-
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "操作成功");
         } catch (Exception e) {
-            try {
-                e.printStackTrace();
-                reponseJsonObject.put("status", "fail");
-                reponseJsonObject.put("detail", e.getMessage());
-                resp.getWriter().write(reponseJsonObject.toString());
-            } catch (JSONException jsonE) {
-                jsonE.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, e.getMessage());
         }
     }
 

@@ -1,6 +1,7 @@
 package servlet;
 
 import bean.DormitoryBean;
+import bean.MessageHandler;
 import dao.DormitoryDao;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,16 +23,16 @@ public class DeleteDormitorySevlet extends HttpServlet {
     /**
      * @see DeleteDormitorySevlet #HttpServlet()
      */
-    public DeleteDormitorySevlet(){
+    public DeleteDormitorySevlet() {
 
     }
 
     /**
-     * @see #doGet(HttpServletRequest, HttpServletResponse)
      * @param req
      * @param resp
      * @throws ServletException
      * @throws IOException
+     * @see #doGet(HttpServletRequest, HttpServletResponse)
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,32 +41,22 @@ public class DeleteDormitorySevlet extends HttpServlet {
         DormitoryDao dao = new DormitoryDao();
         try {
             JSONObject data = new JSONObject(req.getParameter("data"));
-            List<DormitoryBean> list = dao.findDormitorys(data.getInt("c"),data.getInt("num"));
+            List<DormitoryBean> list = dao.findDormitorys(data.getInt("c"), data.getInt("num"));
             DormitoryBean bean = list.get(0);
             dao.delete(bean);
-            JSONObject respJson = new JSONObject();
-            respJson.put("status","success");
-            respJson.put("detail","删除成功");
-            resp.getWriter().write(respJson.toString());
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "删除成功");
         } catch (JSONException e) {
             e.printStackTrace();
-            JSONObject respJson = new JSONObject();
-            try{
-                respJson.put("status","fail");
-                respJson.put("detail",e.getMessage());
-                resp.getWriter().write(respJson.toString());
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, e.getMessage());
         }
     }
 
     /**
-     * @see #doPost(HttpServletRequest, HttpServletResponse)
      * @param req
      * @param resp
      * @throws ServletException
      * @throws IOException
+     * @see #doPost(HttpServletRequest, HttpServletResponse)
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

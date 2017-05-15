@@ -1,5 +1,6 @@
 package servlet;
 
+import bean.MessageHandler;
 import bean.Student;
 import dao.StudentDao;
 import org.json.JSONArray;
@@ -51,7 +52,7 @@ public class SelStudentByParamterServlet extends HttpServlet {
             if (param.containsKey("d_num"))
                 param.put("d_num", data.getInt("d_num"));
             List<Student> list = dao.findStudents(param);
-            if(list!=null){
+            if (list != null) {
                 JSONObject respJson = new JSONObject();
                 JSONArray array = new JSONArray();
                 for (int i = 0; i < list.size(); i++) {
@@ -68,25 +69,14 @@ public class SelStudentByParamterServlet extends HttpServlet {
                     temp.put("dormitory_num", student.getS_dormitory_num());
                     array.put(temp);
                 }
-                respJson.put("list", array);
-                respJson.put("status", "success");
-                resp.getWriter().write(respJson.toString());
-            }else{
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("status", "fail");
-                jsonObject.put("detail", "你都没有给我参数");
+                MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DATA, array);
+            } else {
+                MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, "你没有给我数据嚄");
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("status", "fail");
-                jsonObject.put("detail", e.getMessage());
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
-
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, e.getMessage());
         }
     }
 

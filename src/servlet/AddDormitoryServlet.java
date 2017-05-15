@@ -1,6 +1,7 @@
 package servlet;
 
 import bean.DormitoryBean;
+import bean.MessageHandler;
 import dao.DormitoryDao;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class AddDormitoryServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
     }
 
     /**
@@ -49,7 +50,7 @@ public class AddDormitoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json;charset=UTF-8");
-        try{
+        try {
             JSONObject data = new JSONObject(req.getParameter("data"));
             DormitoryBean bean = new DormitoryBean();
             bean.setD_c(data.getInt("c"));
@@ -59,19 +60,9 @@ public class AddDormitoryServlet extends HttpServlet {
             bean.setD_price(data.getInt("price"));
             DormitoryDao dao = new DormitoryDao();
             dao.addDormitory(bean);
-            JSONObject respJson = new JSONObject();
-            respJson.put("status","success");
-            respJson.put("detail","操作成功");
-            resp.getWriter().write(respJson.toString());
-        }catch (Exception e){
-            JSONObject respJson = new JSONObject();
-            try {
-                respJson.put("status","fail");
-                respJson.put("detail",e.getMessage());
-                resp.getWriter().write(respJson.toString());
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+            MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "操作成功");
+        } catch (Exception e) {
+            MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, e.getMessage());
         }
 
     }
