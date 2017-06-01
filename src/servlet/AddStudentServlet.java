@@ -22,7 +22,7 @@ import java.util.List;
 @WebServlet("/AddStudentServlet")
 public class AddStudentServlet extends HttpServlet {
 
-    private int s_num;
+    private String s_num;
     private String s_name;
     private String s_sex;
     private int s_age;
@@ -59,7 +59,7 @@ public class AddStudentServlet extends HttpServlet {
             //参数封装
             if (!requestBody.equals("")) {
                 jsonObject = new JSONObject(requestBody);
-                s_num = jsonObject.getInt("num");
+                s_num = jsonObject.getString("num");
                 s_name = jsonObject.getString("name");
                 s_sex = jsonObject.getString("sex");
                 s_age = jsonObject.getInt("age");
@@ -73,25 +73,52 @@ public class AddStudentServlet extends HttpServlet {
 
                 //获取当前即将入住的宿舍
                 DormitoryBean bean = findThisDormitory();
-                if (bean.getD_bed() >= 4) {
-                    //宿舍满人了
-                    MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,"宿舍满人了");
+                //如果宿舍存在即插入，若宿舍还没存在则新建宿舍
+                if (bean != null) {
+                    if (bean.getD_bed() == 0) {
+                        //宿舍满人了
+                        MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, "宿舍满人了");
+                    } else {
+                        //宿舍有空位
+                        studentDao.add(student);
+                        bean.setD_bed(bean.getD_bed() - 1);
+                        new DormitoryDao().update(bean);
+                        MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "操作成功");
+                    }
                 } else {
-                    //宿舍有空位
+                    int price = 0;
+                    if (s_department == 20) {
+                        switch ((int) (s_dormitory_num / 100)) {
+                            case 1:
+                            case 2:
+                                price = 2500;
+                                break;
+                            case 3:
+                            case 4:
+                                price = 3000;
+                                break;
+                            case 5:
+                            case 6:
+                                price = 3500;
+                                break;
+                        }
+                    } else {
+                        price = 1500;
+                    }
                     studentDao.add(student);
-                    bean.setD_bed(bean.getD_bed() + 1);
-                    new DormitoryDao().update(bean);
-                    MessageHandler.sendDetailMessage(resp.getWriter(),true,MessageHandler.DETAIL,"操作成功");
+                    addDormitory(new DormitoryBean(s_department, s_dormitory_num, s_dormitory_num / 100, 3, price));
+                    MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "操作成功");
                 }
+
 
             } else {
                 //获取数据为空
-                MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,"上传上来的数据为空");
+                MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, "上传上来的数据为空");
             }
 
         } catch (Exception e) {
             //抓获异常
-            MessageHandler.sendDetailMessage(resp.getWriter(),false,MessageHandler.DETAIL,e.getMessage());
+            MessageHandler.sendDetailMessage(resp.getWriter(), false, MessageHandler.DETAIL, e.getMessage());
         }
     }
 
@@ -113,11 +140,17 @@ public class AddStudentServlet extends HttpServlet {
      */
     public DormitoryBean findThisDormitory() {
         DormitoryDao dao = new DormitoryDao();
-        List<DormitoryBean> list = dao.findDormitorys(s_department, s_dormitory_num);
+        List<DormitoryBean> list = dao.findDormitorys(s_department, 0, s_dormitory_num);
         if (list != null) {
             return list.get(0);
         } else {
             return null;
         }
     }
+
+    public void addDormitory(DormitoryBean bean) {
+        DormitoryDao dao = new DormitoryDao();
+        dao.addDormitory(bean);
+    }
+
 }
