@@ -4,7 +4,6 @@ import bean.MessageHandler;
 import bean.Student;
 import dao.StudentDao;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -18,13 +17,13 @@ import java.util.List;
 /**
  * Created by 区枫华 on 2017/5/9.
  */
-@WebServlet("/SelAllStudentSevlet")
-public class SelAllStudentSevlet extends HttpServlet {
+@WebServlet("/SelAllStudentServlet")
+public class SelAllStudentServlet extends HttpServlet {
 
     /**
-     * @see SelAllStudentSevlet #HttpServlet()
+     * @see SelAllStudentServlet #HttpServlet()
      */
-    public SelAllStudentSevlet(){
+    public SelAllStudentServlet(){
 
     }
 

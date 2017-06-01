@@ -5,7 +5,7 @@
     <class name="bean.Student" table="student" catalog="oufenghua">
 
         <!--配置类和主键-->
-        <id name="s_num" type="java.lang.Integer">
+        <id name="s_num" type="java.lang.String">
             <column name="s_num" not-null="true"></column>
             <generator class="assigned"></generator>
         </id>

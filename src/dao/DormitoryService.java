@@ -1,6 +1,7 @@
 package dao;
 
 import bean.DormitoryBean;
+import com.sun.istack.internal.Nullable;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface DormitoryService {
 
     List<DormitoryBean> findall();
 
-    List<DormitoryBean> findDormitorys(int d_c,int d_num);
+    List<DormitoryBean> findDormitorys(@Nullable int d_c, @Nullable int d_floor, @Nullable int d_num);
 
     void delete(DormitoryBean bean);
 

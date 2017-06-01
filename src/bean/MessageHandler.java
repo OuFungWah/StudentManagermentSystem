@@ -30,7 +30,7 @@ public class MessageHandler {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("status",status);
-            jsonObject.put("detail",detail);
+            jsonObject.put(key,detail);
             writer.write(jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();

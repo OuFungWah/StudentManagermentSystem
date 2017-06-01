@@ -8,7 +8,7 @@ public class Student {
     /**
      * 学号
      */
-    private int s_num;
+    private String s_num;
     /**
      * 姓名
      */
@@ -61,7 +61,7 @@ public class Student {
      * @param s_tel 电话
      * @param s_dormitory_num 宿舍号
      */
-    public Student(int s_num, String s_name, String s_sex, int s_age, int s_department,String s_college, int s_grade, String s_tel, int s_dormitory_num){
+    public Student(String s_num, String s_name, String s_sex, int s_age, int s_department,String s_college, int s_grade, String s_tel, int s_dormitory_num){
         setS_num(s_num);
         setS_name(s_name);
         setS_sex(s_sex);
@@ -73,11 +73,11 @@ public class Student {
         setS_college(s_college);
     }
 
-    public int getS_num() {
+    public String getS_num() {
         return s_num;
     }
 
-    public void setS_num(int s_num) {
+    public void setS_num(String s_num) {
         this.s_num = s_num;
     }
 

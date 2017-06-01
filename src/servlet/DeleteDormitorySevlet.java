@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by 区枫华 on 2017/5/9.
  */
-@WebServlet("/DeleteDormitorySevlet")
+@WebServlet("/DeleteDormitoryServlet")
 public class DeleteDormitorySevlet extends HttpServlet {
 
     /**
@@ -41,7 +41,7 @@ public class DeleteDormitorySevlet extends HttpServlet {
         DormitoryDao dao = new DormitoryDao();
         try {
             JSONObject data = new JSONObject(req.getParameter("data"));
-            List<DormitoryBean> list = dao.findDormitorys(data.getInt("c"), data.getInt("num"));
+            List<DormitoryBean> list = dao.findDormitorys(data.getInt("c"), 0,data.getInt("num"));
             DormitoryBean bean = list.get(0);
             dao.delete(bean);
             MessageHandler.sendDetailMessage(resp.getWriter(), true, MessageHandler.DETAIL, "删除成功");
